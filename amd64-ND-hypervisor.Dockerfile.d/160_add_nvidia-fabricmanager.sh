@@ -8,9 +8,7 @@ else
   . "$SRC/lib.sh"; init
 fi
 
-set -x
 chroot /target apt-get update
-chroot /target apt-get install -yd \
-  mlnx-ofed-kernel-utils mlnx-tools \
-  mlnx-nvme-dkms mlnx-ofed-kernel-dkms \
+chroot /target apt-get install -y \
+  nvidia-fabricmanager-570 \
   #
