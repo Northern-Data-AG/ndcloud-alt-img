@@ -8,7 +8,15 @@ else
   . "$SRC/lib.sh"; init
 fi
 
+chroot /target apt-get clean
 chroot /target apt-get update
-chroot /target apt-get install -y \
-  nvidia-fabricmanager-570 \
+
+VER=575.51.03-1
+chroot /target apt-get install --no-install-recommends -yd --allow-downgrades \
+  nvidia-fabricmanager-${VER%%.*}=$VER \
+  nvidia-kernel-dkms=$VER \
+  firmware-nvidia-gsp=${VER%-[0-9]} \
   #
+
+mkdir -p /target/srv/ci-installer/debs
+mv /target/var/cache/apt/archives/*.deb /target/srv/ci-installer/debs
