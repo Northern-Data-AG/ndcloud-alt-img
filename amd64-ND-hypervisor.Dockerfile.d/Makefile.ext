@@ -12,14 +12,14 @@ output/amd64-ND-%.EFI.iso: .deps/amd64-ND-%.built img-mangler/amd64-EFI-generate
 
 # generate seperate PoC installer image
 output/amd-EFI-CI-PoC-installer.cidata.iso: \
-  docs/AMD64-EFI-CI/ConfigDrive.examples/CI-Installer.sh \
-  docs/AMD64-EFI-CI/ConfigDrive.examples/CI-Installer.d/user-data \
-  docs/AMD64-EFI-CI/ConfigDrive.examples/CI-Installer.d/installer/install-to-disk.sh \
-  docs/AMD64-EFI-CI/ConfigDrive.examples/CI-Installer.d/installer/rootfs-to.sh \
+  docs/AMD64-EFI-CI/ConfigDrive.examples/CI-installer.sh \
+  docs/AMD64-EFI-CI/ConfigDrive.examples/CI-installer.d/user-data \
+  docs/AMD64-EFI-CI/ConfigDrive.examples/CI-installer.d/installer/install-to-disk.sh \
+  docs/AMD64-EFI-CI/ConfigDrive.examples/CI-installer.d/installer/rootfs-to.sh \
 
 	cd docs/AMD64-EFI-CI/ConfigDrive.examples; \
-		sh CI-Installer.sh
-	mv docs/AMD64-EFI-CI/ConfigDrive.examples/CI-Installer.cidata "$@"
+		sh CI-installer.sh
+	mv docs/AMD64-EFI-CI/ConfigDrive.examples/CI-installer.cidata "$@"
 
 # generate live iso with CI data integrated
 output/amd64-ND-hypervisor-installer-cidata.iso: output/amd64-ND-hypervisor.EFI.iso output/amd-EFI-CI-PoC-installer.cidata.iso
