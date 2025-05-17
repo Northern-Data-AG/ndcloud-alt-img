@@ -1,0 +1,27 @@
+# meta: #onestep
+
+FROM sbc:amd64-ND-hypervisor
+
+# create an alien/foreign ARCH container as we need /proc mounted for DKMS to work
+# and install post install DKMS packages
+FROM scratch AS build
+COPY --from=sbc:amd64-ND-hypervisor /target/. /
+RUN set -ex; \
+  for dir in /srv/ci-installer/debs /var/live/medium/debs; do : ;\
+    if ls "$dir"/*.deb > /dev/null 2>&1; then : ;\
+      dpkg -i "$dir"/*.deb ;\
+      rm -f "$dir"/*.deb 2> /dev/null ;\
+      rmdir /srv/ci-installer/debs 2> /dev/null || : ;\
+      rmdir /srv/ci-installer 2> /dev/null || : ;\
+    fi ;\
+  done ;\
+: # EO RUN
+
+# copyover rootfs again
+FROM sbc:amd64-ND-hypervisor
+RUN set -ex; \
+  rm -rf /target ;\
+  mkdir -p /target ;\
+  :
+# EO RUN
+COPY --from=build /. /target/
