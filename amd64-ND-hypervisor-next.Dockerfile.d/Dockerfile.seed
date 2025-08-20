@@ -1,6 +1,6 @@
-# meta: #onestep
-
 FROM sbc:amd64-ND-hypervisor
+# (C) 2023-2025 Joerg Jungermann, GPLv2 see LICENSE
+# meta: #onestep
 
 # create an alien/foreign ARCH container as we need /proc mounted for DKMS to work
 # and install post install DKMS packages
@@ -17,7 +17,7 @@ RUN set -ex; \
   done ;\
 : # EO RUN
 
-# copyover rootfs again
+# copyover rootfs with ZFS modules from DKMS
 FROM sbc:amd64-ND-hypervisor
 RUN set -ex; \
   rm -rf /target ;\
