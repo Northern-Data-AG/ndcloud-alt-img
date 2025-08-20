@@ -10,6 +10,8 @@ fi
 
 chroot /target locale-gen
 
+chroot /target dpkg -P systemd-timesyncd 
+
 chroot /target apt-get install -y \
   ifupdown2 frr \
   htop screen tmux vim-nox mc \
