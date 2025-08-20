@@ -1,13 +1,22 @@
+# files imported from ...
+3rdparty/sbc-fw-alchemy
+#
 Makefile
 Makefile.Dockerfile.generic
-3rdparty/sbc-fw-alchemy
+#
+requirements.txt
 img-mangler
 img-mangler.Dockerfile.d
+#
 amd64-Debian-Bookworm-Cloud-Image.img.url
 amd64-EFI-CI-bookworm.Dockerfile.d
-
+amd64-Debian-Trixie-Cloud-Image.img.url
+amd64-EFI-CI-trixie.Dockerfile.d
+#
 bin/img-mangler
 bin/IRun
+bin/binfmt-helper
+#
 
 *.Dockerfile
 
