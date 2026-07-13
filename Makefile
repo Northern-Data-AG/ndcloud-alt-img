@@ -27,16 +27,16 @@ build: $(WORK_FILES)
 %.img: %.img.xz
 	$(E) "UNXZ $@ <-- $<"
 	$(Q) which pixz > /dev/null && \
-	    xz=pixz || \
-	    xz=xz ;\
-	  $$xz -dc < $< > $@
+		xz=pixz || \
+		xz=xz ;\
+	$$xz -dc < $< > $@
 
 %.img: %.img.gz
 	$(E) "UNGZ $@ <-- $<"
 	$(Q) which pigz > /dev/null && \
-	    gz=pigz || \
-	    gz=gzip ;\
-	  $$gz -dc < $< > $@
+		gz=pigz || \
+		gz=gzip ;\
+	$$gz -dc < $< > $@
 
 %.img: %.rar lib/img-mangler/unrar-img.sh
 	$(E) "UNPACK $@ <--- $<"
@@ -98,19 +98,19 @@ clean-output:
 
 clean-volumes:
 	$(Q) cd "$(DEPDIR)"; ( ls *.volume 2> /dev/null | sed 's/.volume$$//'; docker volume ls -q | sed 's/^sbc-//') | sort -u | while read i; do \
-    i="$${i%.volume}" ;\
+		i="$${i%.volume}" ;\
 		docker volume inspect sbc-"$$i" > /dev/null 2>&1 && \
-		  docker volume rm sbc-"$$i" > /dev/null; \
-	  rm -f "$$i".volume "$$i".workspace ;\
-    echo "DELETE VOLUME $$i" ;\
+			docker volume rm sbc-"$$i" > /dev/null; \
+		rm -f "$$i".volume "$$i".workspace ;\
+		echo "DELETED VOLUME $$i" ;\
 	done
 
 .deps/%.volume:
 	$(E) "DOCKER VOLUME $(NAME_PFX)$(NAME)-$$( basename $(@:.volume=) )"
 	$(Q) set $(SHOPT); \
-		image="$(NAME_PFX)$(NAME)-$$( basename $(@:.volume=) )" ;\
-		docker volume inspect $$image > $@ 2>/dev/null || \
-		  docker volume create $$image > $@
+	image="$(NAME_PFX)$(NAME)-$$( basename $(@:.volume=) )" ;\
+	docker volume inspect $$image > $@ 2>/dev/null || \
+		docker volume create $$image > $@
 
 .deps/%.workspace: images/%.Workspace.d/prepare.sh .deps/img-mangler.built .deps/%.volume
 	$(E) "WORKSPACE $(<:/workspace.d/prepare.sh=)"
