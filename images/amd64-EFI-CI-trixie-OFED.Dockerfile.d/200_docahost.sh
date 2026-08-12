@@ -23,6 +23,7 @@ apt-get -y install \
   doca-basic \
   doca-installer \
   mlnx-ofed-kernel-dkms \
+  mlnx-nvme-dkms \
   rshim \
   mft mft-mlx5 mft-nvredfish kernel-mft-dkms \
 #
