@@ -6,7 +6,7 @@ set -eu
 . "$SRC/lib.sh"; init
 #set -x
 
-# using grub-install in containers during build make sno sense
+# using grub-install in containers during build makes no sense
 dpkg-divert --local --rename --divert /usr/sbin/grub-install.real /usr/sbin/grub-install
 echo "#!/bin/sh"                > /usr/sbin/grub-install
 #echo ": > /run/grub-install" >> /usr/sbin/grub-install
