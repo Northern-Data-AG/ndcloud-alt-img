@@ -95,7 +95,7 @@ url download:
 
 $(DEPDIR)/%.built: input/%.Dockerfile
 	$(E) IMAGE $(NAME_PFX)$(NAME):$(patsubst input/%,%,$(<:.Dockerfile=)) BUILD
-	$(Q) docker build $(DOCKER_BUILD_OPTS) -t $(NAME_PFX)$(NAME):$(patsubst input/%,%,$(<:.Dockerfile=)) -f $< .
+	$(Q) docker build $(DOCKER_BUILD_OPTS) -t $(NAME_PFX)$(NAME):$(patsubst input/%,%,$(<:.Dockerfile=)) --progress=plain -f $< .
 	$(Q) date > $@
 	$(Q) docker image ls $(NAME_PFX)$(NAME):$(patsubst input/%,%,$(<:.Dockerfile=)) >> $@
 
