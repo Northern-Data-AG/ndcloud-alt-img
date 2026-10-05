@@ -1,0 +1,27 @@
+# - makefile -
+# (C) 2023 Joerg Jungermann, GPLv2 see LICENSE
+
+# EXAMPLE config
+# copy to ./config
+
+# ignore auto-build of docker images, as they will be automatically build
+# as base of this config
+DOCKER_IMAGES :=
+# reset WORK_FILES and add which images we want
+WORK_FILES :=
+
+DOCKER_IMAGES += amd64-EFI-CI-trixie-OFED
+
+# generate specific images in docker
+#DOCKER_IMAGES += $(shell lib/tgt.sh PLATFORM-* )
+
+# generate specific image files
+#WORK_FILES += $(shell lib/tgt.sh amd64-*                img.zst )
+WORK_FILES += $(shell lib/tgt.sh amd64-EFI-CI-trixie*   img.zst  EFI.iso )
+
+# Addtional targets for external resources
+
+#input/amd64-Debian-Trixie-Cloud-Image.img:
+#	cp ../sbc-blobs/amd64-Debian-Trixie-Cloud-Image.img $@
+
+# vim: noet ts=2 sw=2 ft=Makefile
