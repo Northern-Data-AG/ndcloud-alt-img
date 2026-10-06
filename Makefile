@@ -105,6 +105,10 @@ clean-volumes:
 		echo "DELETED VOLUME $$i" ;\
 	done
 
+reset:
+	$(Q) rm input/*.Dockerfile .deps/*.d; make dep
+
+
 .deps/%.volume:
 	$(E) "DOCKER VOLUME $(NAME_PFX)$(NAME)-$$( basename $(@:.volume=) )"
 	$(Q) set $(SHOPT); \
