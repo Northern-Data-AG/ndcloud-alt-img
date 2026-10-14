@@ -2,3 +2,8 @@
 # meta: #onestep
 
 FROM sbc:amd64-EFI-CI-trixie-OFED
+
+COPY input/artifacts/kubelet /
+
+RECIPE armbian/cross-reduce-upgdate-initrd+grub
+RECIPE armbian/kernel-keep-latest
