@@ -19,6 +19,7 @@ DOCKER_IMAGES += amd64-ND-hypervisor
 # generate specific image files
 #WORK_FILES += $(shell lib/tgt.sh amd64-*                img.zst )
 WORK_FILES += $(shell lib/tgt.sh amd64-EFI-CI-trixie*   img.zst  EFI.iso )
+WORK_FILES += $(shell lib/tgt.sh amd64-ND-hypervisor*   img.zst  EFI.iso )
 
 # Addtional targets for external resources
 
