@@ -1,0 +1,9 @@
+[Unit]
+Description=PCIe SERR workaround
+
+[Service]
+Type=oneshot
+ExecStart=/opt/pcie-serr-workaround.sh
+
+[Install]
+WantedBy=multi-user.target
