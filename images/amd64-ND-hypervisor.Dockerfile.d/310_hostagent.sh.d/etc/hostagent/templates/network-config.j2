@@ -1,0 +1,31 @@
+# Default config from ND-hypervisor image
+
+network:
+  version: 2
+  ethernets:
+    enp1s0:
+      addresses:
+{% for address in addresses %}
+      - {{ address }}
+{% endfor %}
+      dhcp4: false
+      dhcp6: false
+      nameservers:
+        addresses:
+{% for address in dns_servers %}
+        - {{ address }}
+{% endfor %}
+{% if "ubuntu" not in image["tags"] %}
+      gateway4: 169.254.1.1
+      gateway6: fe80::1
+{% endif %}
+      routes:
+      - on-link: true
+        to: 0.0.0.0/0
+        via: 169.254.1.1
+{% if "ubuntu" in image["tags"] %}
+      - on-link: true
+        to: ::/0
+        via: fe80::1
+{% endif %}
+

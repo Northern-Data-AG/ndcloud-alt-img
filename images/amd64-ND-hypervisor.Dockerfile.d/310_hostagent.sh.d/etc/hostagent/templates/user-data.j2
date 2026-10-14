@@ -1,0 +1,6 @@
+# Default config from ND-hypervisor image
+
+{% if userdata_json %}
+#cloud-config
+{{ userdata_json|yaml }}
+{% endif %}

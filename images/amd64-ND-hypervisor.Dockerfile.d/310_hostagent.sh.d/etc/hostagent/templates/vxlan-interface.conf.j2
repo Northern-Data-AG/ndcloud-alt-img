@@ -1,0 +1,22 @@
+# Default config from ND-hypervisor image
+
+auto vxlan{{ vxlan_vni }}
+iface vxlan{{ vxlan_vni }}
+    vxlan-id {{ vxlan_vni }}
+    vxlan-local-tunnelip {{ vxlan_local_ip }}
+    bridge-learning off
+    bridge-arp-nd-suppress on
+    mtu 9216
+
+auto br{{ vxlan_vni }}
+iface br{{ vxlan_vni }}
+    address fe80::1/64
+    {% for vxlan_interface_address in vxlan_interface_addresses %}
+    address {{ vxlan_interface_address }}
+    {% endfor %}
+    bridge_ports vxlan{{ vxlan_vni }}
+    # ignore vnet (QEMUs virtual interfaces) when reloading the bridge (on hot-plug, etc.)
+    bridge-ports-condone-regex ^vnet[0-9]+$
+    bridge_stp off
+    bridge_fd 0
+    mtu 9216

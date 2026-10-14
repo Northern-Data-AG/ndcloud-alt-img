@@ -1,0 +1,108 @@
+# Default config from ND-hypervisor image
+# This part needs to come with values from the ci-disk. we could leverage the
+# ENV variables that might be injected need to see this
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hostagent
+  labels:
+    role: hostagent
+spec:
+  hostNetwork: true
+  volumes:
+    - name: hostagent-purecert
+      hostPath:
+        path: /etc/hostagent/purestorage_tls_certificate.crt
+    - name: hostagent-purekey
+      hostPath:
+        path: /etc/hostagent/pureprivate.key
+    - name: network-interfaces
+      hostPath:
+        path: /etc/network/interfaces
+    - name: network-interfacesd
+      hostPath:
+        path: /etc/network/interfaces.d
+    - name: nvme-hostnqn
+      hostPath:
+        path: /etc/nvme/hostnqn
+    - name: run-libvirt
+      hostPath:
+        path: /var/run/libvirt
+    - name: lib-libvirt
+      hostPath:
+        path: /var/lib/libvirt
+    - name: dev
+      hostPath:
+        path: /dev
+    - name: opt-edk2
+      hostPath:
+        path: /opt/edk2
+    - name: proc
+      hostPath:
+        path: /proc
+    - name: sys
+      hostPath:
+        path: /sys
+    - name: templates
+      hostPath:
+        path: /etc/hostagent/templates
+  containers:
+    - name: hostagent
+      image: ${HOSTAGENT_REPO_PATH/hostagent:${HOSTAGENT_CONTAINER_TAG}
+      securityContext:
+        privileged: true
+      env:
+        - name: REQUESTS_CA_BUNDLE
+          value: /etc/ssl/certs/ca-certificates.crt
+        - name: LIBVIRT_URL
+          value: qemu:///system
+        - name: CLOUDINIT_PATH
+          value: /var/lib/libvirt/images/cloudinit
+        - name: NAUTOBOT_URL
+          value: ${NAUTOBOT_URL}
+        - name: NAUTOBOT_TOKEN
+          value: ${HOSTAGENT_NAUTOBOT_TOKEN}
+        - name: NAUTOBOT_CLUSTER
+          value: ${CLUSTER}
+        - name: NAUTOBOT_CLUSTER_UUID
+          value: ${CLUSTER_UUID}
+        - name: NAUTOBOT_DEVICE_UUID
+          value: ${DEVICE_UUID}
+        - name: VXLAN_IP
+          value: ${VXLAN_IP}
+        - name: PURESTORAGE_PROXY_SECRET
+          value: ${PURESTORAGE_PROXY_SECRET}
+        - name: PURESTORAGE_TLSCERT_CRT_FILE
+          value: /app/purestorage_tls_certificate.crt
+        - name: PURESTORAGE_PRIVATE_KEY_FILE
+          value: /app/pureprivate.key
+        - name: PURESTORAGE_PRIVATE_KEY_PASSWORD
+          value: ${PURESTORAGE_PRIVATE_KEY_PASSWORD}
+        - name: TEMPLATE_DIR
+          value: /etc/hostagent/templates
+      volumeMounts:
+        - mountPath: /app/purestorage_tls_certificate.crt
+          name: hostagent-purecert
+        - mountPath: /app/pureprivate.key
+          name: hostagent-purekey
+        - mountPath: /etc/network/interfaces
+          name: network-interfaces
+        - mountPath: /etc/network/interfaces.d
+          name: network-interfacesd
+        - mountPath: /etc/nvme/hostnqn
+          name: nvme-hostnqn
+        - mountPath: /var/run/libvirt
+          name: run-libvirt
+        - mountPath: /var/lib/libvirt
+          name: lib-libvirt
+        - mountPath: /dev
+          name: dev
+        - mountPath: /opt/edk2
+          name: opt-edk2
+        - mountPath: /proc
+          name: proc
+        - mountPath: /sys
+          name: sys
+        - mountPath: /etc/hostagent/templates
+          name: templates

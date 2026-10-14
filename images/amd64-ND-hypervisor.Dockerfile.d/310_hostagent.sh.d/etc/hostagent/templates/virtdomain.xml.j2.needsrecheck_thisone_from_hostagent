@@ -1,0 +1,160 @@
+<!-- Default config from ND-hypervisor image -->
+
+<domain xmlns:qemu="http://libvirt.org/schemas/domain/qemu/1.0" type="kvm">
+  <name>{{ name }}</name>
+  <uuid>{{ uuid }}</uuid>
+  <metadata>
+    <libosinfo:libosinfo xmlns:libosinfo="http://libosinfo.org/xmlns/libvirt/domain/1.0">
+      <libosinfo:os id="http://ubuntu.com/ubuntu/20.04"/>
+    </libosinfo:libosinfo>
+    <ndcloud:tenant xmlns:ndcloud="https://northerndata.de/">{{ tenantID }}</ndcloud:tenant>
+    <nova:instance xmlns:nova="http://openstack.org/xmlns/libvirt/nova/1.0">
+      <nova:name>{{ userdefinedName }}</nova:name>
+      <nova:flavor name="{{ flavorName }}">
+        <nova:memory>{{ memoryMiB }}</nova:memory>
+        <nova:disk>{{ storageGiB }}</nova:disk>
+        <nova:swap>0</nova:swap>
+        <nova:ephemeral>0</nova:ephemeral>
+        <nova:vcpus>{{ cpuCores }}</nova:vcpus>
+      </nova:flavor>
+      <nova:owner>
+        <nova:project uuid="{{ tenantID }}">{{ tenantName }}</nova:project>
+      </nova:owner>
+    </nova:instance>
+  </metadata>
+  <memory unit='KiB'>{{ memoryKiB }}</memory>
+  <currentMemory unit='KiB'>{{ memoryKiB }}</currentMemory>
+  <vcpu placement='static'>{{ cpuCores }}</vcpu>
+  <os>
+    <type arch='x86_64' machine='q35'>hvm</type>
+    <loader readonly='yes' type='pflash'>{{ ovmfPath.code }}</loader>
+    <nvram template="{{ ovmfPath.vars }}">/var/lib/libvirt/qemu/nvram/{{ uuid }}_VARS.fd</nvram>
+    <boot dev='hd'/>
+    <smbios mode='sysinfo'/>
+  </os>
+  <sysinfo type='smbios'>
+    <bios>
+      <entry name='vendor'>Northern Data</entry>
+    </bios>
+    <system>
+      <entry name='manufacturer'>Northern Data</entry>
+      <entry name='product'>Northern Data Cloud VM</entry>
+      <entry name='version'>1.0</entry>
+    </system>
+    <baseBoard>
+      <entry name='manufacturer'>Northern Data</entry>
+      <entry name='product'>Virtual Mainboard</entry>
+      <entry name='version'>1.0</entry>
+      <entry name='serial'>7b357d38-f6f4-48f6-ae73-e4b517582045</entry>
+    </baseBoard>
+    <chassis>
+      <entry name='manufacturer'>Northern Data</entry>
+      <entry name='version'>1.0</entry>
+      <entry name='serial'>7b357d38-f6f4-48f6-ae73-e4b517582045</entry>
+      <entry name='asset'></entry>
+      <entry name='sku'></entry>
+    </chassis>
+  </sysinfo>
+  <qemu:commandline>
+    <qemu:arg value="-cpu"/>
+    <qemu:arg value="host,host-phys-bits=on,+kvm_pv_eoi,+kvm_pv_unhalt,+lahf_lm,-amd-stibp"/>
+    <qemu:arg value='-fw_cfg'/>
+    <qemu:arg value='opt/ovmf/X-PciMmio64Mb,string=2048576'/>
+    <qemu:arg value='-global'/>
+    <qemu:arg value='mch.extended-tseg-mbytes=32'/>
+  </qemu:commandline>
+  <features>
+    <acpi/>
+    <apic/>
+    <vmport state='off'/>
+  </features>
+  <cpu mode='host-model' check='partial'/>
+  <clock offset='utc'>
+    <timer name='rtc' tickpolicy='catchup'/>
+    <timer name='pit' tickpolicy='delay'/>
+    <timer name='hpet' present='no'/>
+  </clock>
+  <on_poweroff>destroy</on_poweroff>
+  <on_reboot>restart</on_reboot>
+  <on_crash>restart</on_crash>
+  <pm>
+    <suspend-to-mem enabled='no'/>
+    <suspend-to-disk enabled='no'/>
+  </pm>
+  <devices>
+    <emulator>/usr/bin/qemu-system-x86_64</emulator>
+
+    {% for disk in disks %}
+      <disk type="{{ disk.type }}" device="disk">
+        <driver name="qemu" type="{{ disk.driver_type }}" {{ disk.driver_arguments }}/>
+        <source {{ disk.source_type }}="{{ disk.source }}"/>
+        <target dev="{{ disk.target }}" bus="virtio"/>
+      </disk>
+    {% endfor %}
+
+    <disk type="file" device="cdrom">
+      <driver name="qemu" type="raw"/>
+      <source file="{{ cloudInitSeedISO }}"/>
+      <target dev="sdb" bus="sata"/>
+      <readonly/>
+    </disk>
+    <controller type="usb" model="qemu-xhci" ports="15"/>
+
+    {% for network in networks %}
+      <interface type='{{ network.type }}'>
+        <mac address='{{ network.macAddress }}'/>
+        <source {{ network.type }}='{{ network.hostInterface }}'/>
+        <model type='{{ network.emulationType }}'/>
+        <driver name='vhost' queues='{{ cpuCores }}'/>
+      </interface>
+    {% endfor %}
+
+    <console type='pty'/>
+    <channel type='unix'>
+      <target type='virtio' name='org.qemu.guest_agent.0'/>
+    </channel>
+    <channel type='spicevmc'>
+      <target type='virtio' name='com.redhat.spice.0'/>
+    </channel>
+    <input type='tablet' bus='usb'/>
+    <graphics type='spice' autoport='yes' listen='127.0.0.1'>
+      <listen type='address' address='127.0.0.1'/>
+      <image compression='auto_glz'/>
+    </graphics>
+    <video>
+      <model type='virtio'/>
+    </video>
+
+    {% for pciDevice in pciDevices %}
+      <hostdev mode='subsystem' type='pci' managed='yes'>
+        {% if 'driver' in pciDevice and pciDevice.driver == 'vfio' %}
+        <driver name='vfio'/>
+        <source>
+          <address bus='{{ pciDevice.position.bus }}'
+            slot='{{ pciDevice.position.slot }}'
+            function='{{ pciDevice.position.function }}'/>
+        </source>
+        <address type='pci' domain='{{ pciDevice.position.domain }}'
+          bus='{{ pciDevice.position.bus }}'
+          slot='{{ pciDevice.position.slot }}'
+          function='{{ pciDevice.position.function }}'/>
+        {% else %}
+        <source>
+          <address domain='{{ pciDevice.position.domain }}'
+            bus='{{ pciDevice.position.bus }}'
+            slot='{{ pciDevice.position.slot }}'
+            function='{{ pciDevice.position.function }}'/>
+        </source>
+        {% endif %}
+      </hostdev>
+    {% endfor %}
+
+    <redirdev bus='usb' type='spicevmc'/>
+    <redirdev bus='usb' type='spicevmc'/>
+    <memballoon model='virtio'/>
+    <rng model='virtio'>
+      <backend model='random'>/dev/urandom</backend>
+    </rng>
+  </devices>
+</domain>
+
