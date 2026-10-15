@@ -15,8 +15,8 @@ ln -sf /usr/share/zoneinfo/UTC /etc/localtime
 echo "blacklist amdgpu" > /etc/modprobe.d/blacklist-amdgpu.conf
 echo "blacklist nouveau" > /etc/modprobe.d/blacklist-nouveau.conf
 echo "blacklist snd_hda_intel" > /etc/modprobe.d/blacklist-snd-intel.conf
-echo "nvme_rdma" > /etc/modprobe.d/nvme.conf
-echo "nbd" > /etc/modprobe.d/nbd.conf
+echo "nvme_rdma" > /etc/modules-load.d/nvme.conf
+echo "nbd" > /etc/modules-load.d/nbd.conf
 
 
 # Configure default logrotate rules
