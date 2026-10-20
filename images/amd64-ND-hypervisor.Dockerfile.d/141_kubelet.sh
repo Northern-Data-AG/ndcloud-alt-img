@@ -123,7 +123,7 @@ chmod 444 /etc/kubelet/config.yml
 
 
 # ship kubelet systemd unit
-cat > /etc/systemd/system/kubelet.service <<'EOF'
+cat > /etc/systemd/system/kubelet.service <<EOF
 # Default config from ND-hypervisor image
 
 [Unit]
