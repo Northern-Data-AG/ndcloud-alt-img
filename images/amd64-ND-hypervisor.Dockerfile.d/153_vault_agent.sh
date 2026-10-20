@@ -19,7 +19,7 @@ mkdir -p /etc/vault-agent
 
 
 # Add default configs
-cat > /etc/vault-agent/config.hcl <<'EOF'
+cat > /etc/vault-agent/config.hcl <<EOF
 # Default config from ND-hypervisor image
 
 auto_auth {
@@ -57,7 +57,7 @@ chmod 444 /etc/vault-agent/config.hcl
 
 
 # Add container definitions to kubelet manifests
-cat > /opt/kubelet/manifests/vault-agent.yml <<'EOF'
+cat > /opt/kubelet/manifests/vault-agent.yml <<EOF
 # Default config from ND-hypervisor image
 
 apiVersion: v1
