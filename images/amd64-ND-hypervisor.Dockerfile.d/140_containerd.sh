@@ -24,6 +24,81 @@ case "$(uname -m)" in
   *) echo "unsupported arch: $(uname -m)" >&2; exit 1 ;;
 esac
 
+
+# inject taiga-pkgs-repo key
+cat > /etc/apt/keyrings/taiga-pkgs-repo.asc <<'EOF'
+-----BEGIN PGP PUBLIC KEY BLOCK-----
+
+mQINBGcSWMkBEADCoFn5ui5VjCkbI5gLGTR3ODCSPBU6Z4QizMzozuMdI58wh87Y
+SEPgQQEI03l74JcLFiJAvlDO2MgUUr5PJIl1t3wuMdLRslsinUgr/iPDBpZLQVjr
+DGMiELwwDZHWFlzPxNyjenMgWi0mMr6KuO4njGx5XM0tqo7TQ9WPuFHSYbQvHaum
+DGvWupyy1rrHL2gupG0Ig/uXnZrqvCmylkV4NbeYHkgibvJaiWyx+SrB5uz80HWl
++4UesKVx57Ofm/oi+f/iTk/hScZdmYQzeeTnVsQZ6jIzoxzqKAAGRxU+eOnhLqll
+Ls8BcLnQ/+F6qu6iV/AHRnRHQda8lhriHXB5Ezg/xbtNe3mXZX30VJaHwb40wOJ+
+nmbrBTr5kImThc4n+CTT5EMGHcfMqV9ietE9Ovgu5EtyDIcVKHAdIvu3e8hrySh9
+NxIy1lxq8wdbheFTIhPl6SPJ7SXwPoSsmP9fmmj7AA+dqaVwH2Xz4saU7A+/XQic
+8wqhPstY6C30LWSORVf8jAcAnrm0PTArA/WNd/gQ2GSVKb2ej2KNcVG2D42z5xP1
+uHX5eL7qxKl29Mpah5zbe0MXxqMuklWIPTfvtyvi5wIR78Jx9iNfiZ7sxvjhlTXa
+BzUps0fs+8wia8wHmB0t1iLGNMIgZmN3Wkuslra/BOuQmzT6/TPmyhfj/QARAQAB
+tFFjbG91ZC1pYWFzQHRhaWdhY2xvdWQuY29tIChtbG54LWRlYi1yZXBvLXNpZ25p
+bmcta2V5KSA8Y2xvdWQtaWFhc0B0YWlnYWNsb3VkLmNvbT6JAk4EEwEKADgWIQQ/
+LISGAGDRLTk8HoONIvG9qZJVNAUCZxJYyQIbAwULCQgHAgYVCgkICwIEFgIDAQIe
+AQIXgAAKCRCNIvG9qZJVNOb6D/wOC/Wb61brz+5cuaYalPeLJvTJY+UOmIn+AstS
+SGJVgmR22+eM7+lrKrrVn371x5/GbozhoyP5hGQh7Ffn+HpDuXJE1DzNrcRJbgAL
+nve8k1cwnTPMAZudade/5/TKKAG/Ud4zuIcTK/VrG/LpkPaBi76nsJyqtIyP89Lt
+OBE6oNTUBDXYbNOOgTb4gCjSrz+zDiXvLEQIURhnro+1c0BokAiWFi3YyCeT75IW
+7YXbufHV7l2Pm6GbzQfLJjWCZr+hhI3/Go68TS70r+jx8MvYv98pKALuoldlXxqs
+gtjEfFYuVpKACfgkPX0WPSRjpY1PRCcRSdtHIJ7w/ppkzPerIlKQX/g8bEqyPNzn
+BAFXx8D1/o2cg5aAR29w8yX4xQ87gPVMIX59hUMuaqguDq1TJ0r2W4xvFlcvM+7x
+5W+7UYYCjj7TnxDwRcAcwg/jVqcQ5DdDaP1ZFt6mmF8Qp/EJLVg4DzDiGK3NDXYc
+X4LVkN6rFnwL69ghx15zpXC9YZDtMZ3bJYcsUDcrwWMVcSvkJEtVc6CCbMgd63ei
+JXqKexRvx5nF8d/qZeYO6yzaADeWi7TmnkVuXSAcJcU6bL6SwlKrWyJbYUoTONF0
+GSygESVeI1d/mm9OFCUa/Fcl4k2iBA1P6gTxWaG9E6lSNdDheMlWxXFJu5nKdvCa
+7U6w1bkCDQRnEljJARAA0ClJe0ZAll6eyrhfeM9cmdwM1GmT191GKR9kSetfA5s8
+YqK+eYpUHDrdcCE4z2p5SlVbQlcGQ2rzVBOpSQU3WUS4eHCHw6ie+jBCf8i7YLnJ
+3GBrLQ66hqNhjwonle2NmrnMgZicghJazZOQOCTfq2ENUqciRYoIk7n26iYDABfj
+eoBJVqLl8NPjOPhPw9HU536oUi9sbbC1FtQPI4aHoYVMiQ/LtKpNFjla8SUwY5uo
+0+JT06XC7ZFeobQFZKUwOfwy0SjUEiqXZBApF/kKdRu9sE904kJ5SYZDKa81eFpu
+uDi0OarTAGcEPu2Tz7xXiywt2IYlPfRCdsunRLklB2+efCafgjkonPiASMmMkRVG
+/CfhPwva1kh+Lf3KXjf65E2SYo6Gzjvk/88skyRp5GdvywCQLA0m+gumeLFcUg2X
+PRu+ZiLqUBfWQdIPys9ZPS3npg0RU6PHlibnSLUyu6iYvmOW/DfYssWlQNz498bU
+sE/zNbhkIR2gC+sGlorl4sVtD6vgSe5SmXhNgd3pxGnXOUeqI8LgFcBebXXRC8T7
+hS4MlxBOwjvSCyKi7VpWtqGKih0LqgisyZM4HCV6FXt2++D4ZJW6b9mtoMYUl2cU
+VKdtq5T7HGap8qLkPEv1tgoCy2BGY4QUuHAx2gKFEParC2v4/OCoyHB25Oj828MA
+EQEAAYkCNgQYAQoAIBYhBD8shIYAYNEtOTweg40i8b2pklU0BQJnEljJAhsMAAoJ
+EI0i8b2pklU0eIYP/0VXI9ii3wGuIZ4Xms/trT1mgNf9Nr7otdVGxM4jipkMQy4A
+Gmhjzgb8a+J/Pd+PlLNlX5vH+oAG11FPqrDKSKrOh4Q401Ak/QE4rEtVJYSvFROw
+/o7p3x61TG0ldpjDLP8Ks36uR2Pb+2r2IOeH++PkhIcDGtRq1cxK+cNF7T6YxukQ
+uUyMgCOfcWSmgWiJYTYZqbaawMII+HLjXJIXV3c+rpwpNoqOs0nrNLkIaL67xQyN
+EBSZGn5/NXg/nxESi1ObiILIEMBKu0GrKwojRDJPWJYXn/1FZmj7UUKkfpMwJqxj
+vDfqw9NjlZ8yjeZSAS1dGxHEkWr3upvz/GlvSBfhHc7cuvlLhXAjy2OgxPy7Jq70
+zFBqc01UXE74x3wnfX5IGJWY7TUeB77i98fNTfddovB1lh/pZJ47LtP4WdWHp478
+OmhIWc6lEx+chJamftwS4on21GP79x6A/3N10XaCaMnpZMLvH7WFTMjVBRCXAY3R
+DktAieijzF71wsMg3yWK3lmAuzpK5htgNrZ8eN7j+GgkSfU3euCRchcQ4553caIM
+hBxRIATnXArmRcUNsrXBvncOCVkmYnMkRCIRDBFDTqxXXoGMT5F6hB17jAimPpkI
+cea//2JdYCtXVsvGPUcmVK53FeGgv/cIPoNmYgTKCNetZ9l8XGe9iI+4NfR+
+=dAd6
+-----END PGP PUBLIC KEY BLOCK-----
+EOF
+chmod 444 /etc/apt/keyrings/taiga-pkgs-repo.asc
+
+# add taiga mirrors
+cat > /etc/apt/sources.list.d/taiga-pkgs.list <<'EOF'
+# Default config from ND-hypervisor image
+
+Types: deb
+URIs: http://taiga-pkgs.lefdal.northerndata.tech/debian
+Suites: trixie
+Components: main
+Architectures: amd64
+Signed-By: /etc/apt/keyrings/taiga-pkgs-repo.asc
+EOF
+chmod 444 /etc/apt/sources.list.d/taiga-pkgs.list
+###
+## ABOVE IS USED TO use APT to install packages. Although they are outdated
+### Adding here for testing purposes, need to check available versions
+
+
 # Install containerd from the bakery
 # #cd "$(mktemp -d)"
 CONTAINERD_REPO=https://github.com/containerd/containerd.git
@@ -54,6 +129,10 @@ wget -6 https://github.com/containernetworking/plugins/releases/download/${LATES
   --output-document containernetworking.tgz
 mkdir -p /opt/cni/bin
 tar -C /opt/cni/bin -xzf containernetworking.tgz
+# keep previous permissions for this file, just in case someone injects keys
+chmod 440 /etc/containerd/config.toml
+# guarantee that service is marked as enabled
+systemctl enable containerd.service
 
 
 # RUNC meddles with apparmor and other things, so lets use the apt bin for
@@ -71,6 +150,7 @@ apt install -y runc
 #  --output-document runc.deb
 #dpkg -i runc.deb
 
+
 # Install nerdctl from college
 NERDCTL_REPO=https://github.com/containerd/nerdctl.git
 LATEST=$(git ls-remote --tags --refs --sort=-v:refname "$NERDCTL_REPO" 'v[0-9]*' \
@@ -82,6 +162,7 @@ wget -6 https://github.com/containerd/nerdctl/releases/download/${LATEST}/nerdct
   --output-document nerdctl.tar.gz
 tar -C /usr/local/bin -xzf nerdctl.tar.gz
 
+
 # Install crictl from the alpine glaciers
 NERDCTL_REPO=https://github.com/kubernetes-sigs/cri-tools.git
 LATEST=$(git ls-remote --tags --refs --sort=-v:refname "$NERDCTL_REPO" 'v[0-9]*' \
@@ -91,8 +172,35 @@ LATEST=$(git ls-remote --tags --refs --sort=-v:refname "$NERDCTL_REPO" 'v[0-9]*'
 wget -6 https://github.com/kubernetes-sigs/cri-tools/releases/download/${LATEST}/crictl-${LATEST}-linux-${ARCH}.tar.gz \
   --output-document crictl.tar.gz
 tar zxvf crictl.tar.gz -C /usr/local/bin
+
+
+# apply crictl default configs
+cat > /etc/crictl.yaml <<'EOF'
+# Default config from ND-hypervisor image
+
+runtime-endpoint: unix:///run/containerd/containerd.sock
+image-endpoint: unix:///run/containerd/containerd.sock
+timeout: 10
+debug: false
+EOF
+chmod 644 /etc/crictl.yaml
+
+
 #rm -f crictl-$VERSION-linux-amd64.tar.gz
 
+
+##### SECRETS AND CONFIGS CAN BE INJECTED FROM THE CI-DATA DISK
+##### INTO THE /etc/containerd/conf.d/ PATH !!!!!!
+###########
+## EXAMPLE
+##
+### /etc/containerd/conf.d/10-registry-bar.toml
+##[plugins."io.containerd.cri.v1.images".registry.configs."bar.example.com".auth]
+##  username = "bar"
+##  password = "{{ user_registry.bar }}"
+##
+## chmod 440 -R /etc/containerd/conf.d/*
+###########
 
 # Configure containerd runner
 #cat > /etc/containerd/config.toml <<'EOF'
