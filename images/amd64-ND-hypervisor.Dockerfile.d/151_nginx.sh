@@ -5,7 +5,9 @@ set -eu
 . "$SRC/lib.sh"; init
 set -x
 
-# versions
+# vars
+CONTAINER_REGISTRY="docker.io"
+NGINX_REPO_PATH="${CONTAINER_REGISTRY}/library"
 NGINX_CONTAINER_TAG="1.27.1"
 # NOTE: THIS IS MEH, need to configure to pull from our repo
 # REPO mirror should allow to use cached mirrors, available for all
@@ -139,7 +141,7 @@ systemctl disable nginx.service 2>/dev/null || true
 
 # add nginx manifest to node containers
 mkdir -p /opt/kubelet/manifests
-cat > /opt/kubelet/manifests/nginx.yml <<'EOF'
+cat > /opt/kubelet/manifests/nginx.yml <<EOF
 # Default config from ND-hypervisor image
 
 apiVersion: v1
@@ -183,7 +185,7 @@ spec:
         path: /var/www/html
   containers:
     - name: nginx
-      image: docker.io/library/nginx:${NGINX_CONTAINER_TAG}
+      image: ${NGINX_REPO_PATH}/nginx:${NGINX_CONTAINER_TAG}
       volumeMounts:
         - mountPath: /etc/nginx/nginx.conf
           name: nginx-config
