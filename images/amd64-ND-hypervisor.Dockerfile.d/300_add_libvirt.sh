@@ -20,7 +20,9 @@ apt install -y \
 
 
 # install host system guest manager and virtualization
-apt install -y --no-install-recommends \
+# --no-install-recommends makes something miss relative to tls and nothing
+# works
+apt install -y \
   ovmf \
   qemu-system qemu-system-x86 qemu-utils \
   libvirt-daemon-system libvirt-clients \
