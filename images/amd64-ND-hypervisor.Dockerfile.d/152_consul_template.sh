@@ -62,7 +62,7 @@ syslog {
 EOF
 chmod 440 /etc/consul-template/config.hcl
 
-cat > /etc/systemd/system/consul-template.service <<'EOF'
+cat > /etc/systemd/system/consul-template.service <<EOF
 # Default config from ND-hypervisor image
 
 [Unit]
@@ -75,9 +75,9 @@ StartLimitIntervalSec=60
 [Service]
 Type=simple
 SuccessExitStatus=12
-ExecReload=/bin/kill -SIGHUP $MAINPID
-ExecStop=/bin/kill -SIGINT $MAINPID
-ExecStart={{ consul_template_binary }} \
+ExecReload=/bin/kill -SIGHUP \$MAINPID
+ExecStop=/bin/kill -SIGINT \$MAINPID
+ExecStart=${CONSUL_BIN_PATH} \
     -config /etc/consul-template
 Restart=on-failure
 KillMode=process
