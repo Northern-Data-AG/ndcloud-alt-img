@@ -91,6 +91,9 @@ systemctl enable nvme_qos.service
 # Install required packages for HOST nvme control
 apt install -y nvme-cli
 # Warning: Remove nvme unique identifiers from seed
+# ## NOTEL: ???? VALIDATION NEEDED. This install on one of the hypervisors
+# gave: nqn.2014-08.org.nvmexpress:uuid:e9184000-7983-11ec-8000-18c04db77f02
+# CROSSCHECK THAT OTHER INSTALL HAS DIFFERENT UUID AND BOTH MATCH
 rm /etc/nvme/hostnqn
 rm /etc/nvme/hostid
 cat > /etc/systemd/system/nvme-hostid-init.service <<'EOF'
