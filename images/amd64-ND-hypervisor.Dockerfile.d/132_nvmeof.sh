@@ -94,6 +94,10 @@ apt install -y nvme-cli
 # ## NOTEL: ???? VALIDATION NEEDED. This install on one of the hypervisors
 # gave: nqn.2014-08.org.nvmexpress:uuid:e9184000-7983-11ec-8000-18c04db77f02
 # CROSSCHECK THAT OTHER INSTALL HAS DIFFERENT UUID AND BOTH MATCH
+# !!!! THe key, not removed or re-generated has a very close uuid on the
+# second host e9184000-7983-11ec-8000-18c04db779fe which feels very close to
+# confort. Need to investigate how this is generated
+# This uuid seems to be a time dependent UUID (version 1) which might be bad
 rm /etc/nvme/hostnqn
 rm /etc/nvme/hostid
 cat > /etc/systemd/system/nvme-hostid-init.service <<'EOF'
