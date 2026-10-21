@@ -129,6 +129,8 @@ cat > /etc/systemd/system/kubelet.service <<EOF
 [Unit]
 Description=Kubernetes Kubelet
 Documentation=https://github.com/kubernetes/kubernetes
+After=containerd.service
+Requires=containerd.service
 StartLimitBurst=5
 StartLimitIntervalSec=60
 
