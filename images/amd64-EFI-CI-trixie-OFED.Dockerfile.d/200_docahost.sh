@@ -18,6 +18,8 @@ apt-get update
 
 #apt-get -y install doca-runtime
 #apt-get -y install doca-networking
+# we need this to compile any package with dkms.
+apt-get -y install linux-headers-generic
 
 apt-get -y install \
   doca-basic \
